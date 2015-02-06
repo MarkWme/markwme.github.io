@@ -5,6 +5,6 @@ description: > # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://markw.me" # the base hostname & protocol for your site
 twitter_username: chipfat
-
+permalink: /:year/:month/:day/:title/
 # Build settings
 markdown: kramdown
