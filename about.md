@@ -4,8 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+My name is Mark Whitby. I’m what they call an “IT Professional”, or what ordinary people might call “a bloke who knows about computers”. I’ve been working in the IT industry for more than 25 years and most of that time has been spent working with various Microsoft technologies, including Windows Server.
 
-You can find the source code for the Jekyll new theme at: [github.com/jglovier/jekyll-new](https://github.com/jglovier/jekyll-new)
+I created this website to help myself keep up to date with everything that’s going on, but I figured I can’t be the only one who feels as though they are struggling to keep pace with the constant changes. So, hopefully this website will help others, like you, to stay on top of everything as well.
 
-You can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+If you find the information here helpful, tell a friend, tell a colleague, just spread the word. If you don’t like what you find here, or you have any ideas then tell me!
