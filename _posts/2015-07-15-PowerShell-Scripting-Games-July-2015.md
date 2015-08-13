@@ -3,12 +3,15 @@ layout: post
 title:  "PowerShell Scripting Games - July 2015 Puzzle"
 categories: microsoft powershell
 tags: powershell "scripting games"
+excerpt_separator: <!--more-->
 ---
 The best way to get better at something is to practice it as often as possible. I've always enjoyed scripting and consider myself something of a VBScript wizard!  But like a lot of VBScript aficionados I've taken my time to switch to PowerShell. Why?  Well, I've got a whole bunch of VBScripts that work just fine. But since Windows Server 2012 arrived with PowerShell v3.0, it's been increasingly difficult to ignore PowerShell. And although I do have a great back catalogue of .vbs files, there's no denying that these days PowerShell could probably make a better job of it.
 
 So, to get better at PowerShell, I look for opportunities to use it as often as possible. It's not just a great tool for automating system administration tasks, it also comes in handy in a wealth of other situations. Like processing the Sales History file that eBay provides to my wife for her online store. Another good way to practice is to take part in the [PowerShell.org Scripting Games][PowerShellOrg]. This used to run as an annual event, but it was recently decided to make this into a regular monthly challenge.
 
 Rather than just post a solution, I thought it might be helpful to others to post a bit about the thought process that I followed to solve July's puzzle. By the way, this is by no means the *right* or the only solution. The great thing about PowerShell is that there are often several *right* ways to solve a problem. Ultimately, the *right* solution is one that works!
+
+<!--more-->
 
 #The July 2015 Puzzle#
 
@@ -34,23 +37,25 @@ The first thing that jumped out at me was the need to output the BIOS Serial Num
 
 So, how do you find out where the BIOS Serial Number is buried in the wealth of data that WMI provides?  Well, one way to do this is with the `Get-CimClass` cmdlet. The `-ClassName` parameter takes wildcards, so we can use that to find anything that mentions BIOS simply by placing asterisks before and after the word BIOS, meaning find anything that has the word BIOS buried somewhere in it.
 
-`Get-CimClass -ClassName *BIOS*`
+{% highlight powershell %}
+Get-CimClass -ClassName *BIOS*
+{% endhighlight %}
 
 ~~~
    NameSpace: ROOT/cimv2
 
-CimClassName                        CimClassMethods      CimClassProperties                                                                                                                           
-------------                        ---------------      ------------------                                                                                                                           
-CIM_BIOSElement                     {}                   {Caption, Description, InstallDate, Name...}                                                                                                 
-Win32_BIOS                          {}                   {Caption, Description, InstallDate, Name...}                                                                                                 
-CIM_VideoBIOSElement                {}                   {Caption, Description, InstallDate, Name...}                                                                                                 
-Win32_SMBIOSMemory                  {SetPowerState, R... {Caption, Description, InstallDate, Name...}                                                                                                 
-CIM_VideoBIOSFeature                {}                   {Caption, Description, InstallDate, Name...}                                                                                                 
-CIM_BIOSFeature                     {}                   {Caption, Description, InstallDate, Name...}                                                                                                 
-Win32_SystemBIOS                    {}                   {GroupComponent, PartComponent}                                                                                                              
-CIM_VideoBIOSFeatureVideoBIOSEle... {}                   {GroupComponent, PartComponent}                                                                                                              
-CIM_BIOSFeatureBIOSElements         {}                   {GroupComponent, PartComponent}                                                                                                              
-CIM_BIOSLoadedInNV                  {}                   {Antecedent, Dependent, EndingAddress, StartingAddress} 
+CimClassName                        CimClassMethods      CimClassProperties
+------------                        ---------------      ------------------
+CIM_BIOSElement                     {}                   {Caption, Description, InstallDate, Name...}
+Win32_BIOS                          {}                   {Caption, Description, InstallDate, Name...}
+CIM_VideoBIOSElement                {}                   {Caption, Description, InstallDate, Name...}
+Win32_SMBIOSMemory                  {SetPowerState, R... {Caption, Description, InstallDate, Name...}
+CIM_VideoBIOSFeature                {}                   {Caption, Description, InstallDate, Name...}
+CIM_BIOSFeature                     {}                   {Caption, Description, InstallDate, Name...}
+Win32_SystemBIOS                    {}                   {GroupComponent, PartComponent}
+CIM_VideoBIOSFeatureVideoBIOSEle... {}                   {GroupComponent, PartComponent}
+CIM_BIOSFeatureBIOSElements         {}                   {GroupComponent, PartComponent}
+CIM_BIOSLoadedInNV                  {}                   {Antecedent, Dependent, EndingAddress, StartingAddress}
 ~~~
 
 Ok, so quite a few things to choose from here, so let's see what information each one contains until we hit what we're looking for. We can use `Get-CimInstance` to see what data is returned.  Let's start with the top entry - `CIM_BIOSElement`.
@@ -71,14 +76,14 @@ Ok, so we have a BIOS serial number. But, we also need a computer name, version 
 ~~~
    NameSpace: ROOT/cimv2
 
-CimClassName                        CimClassMethods      CimClassProperties                                                                                                                           
-------------                        ---------------      ------------------                                                                                                                           
-CIM_OperatingSystem                 {Reboot, Shutdown}   {Caption, Description, InstallDate, Name...}                                                                                                 
-Win32_OperatingSystem               {Reboot, Shutdown... {Caption, Description, InstallDate, Name...}                                                                                                 
-Win32_OperatingSystemAutochkSetting {}                   {Element, Setting}                                                                                                                           
-Win32_SystemOperatingSystem         {}                   {GroupComponent, PartComponent, PrimaryOS}                                                                                                   
-CIM_OperatingSystemSoftwareFeature  {}                   {GroupComponent, PartComponent}                                                                                                              
-Win32_OperatingSystemQFE            {}                   {Antecedent, Dependent}      
+CimClassName                        CimClassMethods      CimClassProperties
+------------                        ---------------      ------------------
+CIM_OperatingSystem                 {Reboot, Shutdown}   {Caption, Description, InstallDate, Name...}
+Win32_OperatingSystem               {Reboot, Shutdown... {Caption, Description, InstallDate, Name...}
+Win32_OperatingSystemAutochkSetting {}                   {Element, Setting}
+Win32_SystemOperatingSystem         {}                   {GroupComponent, PartComponent, PrimaryOS}
+CIM_OperatingSystemSoftwareFeature  {}                   {GroupComponent, PartComponent}
+Win32_OperatingSystemQFE            {}                   {Antecedent, Dependent}
 ~~~
 
 As before, a few options to choose from. Let's start at the beginning with `CIM_OperatingSystem`. We'll pass that to `Get-CimInstance` and see what it finds.
@@ -100,14 +105,14 @@ To save some space on this post, here's a modfied version of the output from tha
 ~~~
    TypeName: Microsoft.Management.Infrastructure.CimInstance#root/cimv2/Win32_OperatingSystem
 
-Name                                      MemberType  Definition                                                                                                                                      
-----                                      ----------  ----------                                                                                                                                      
+Name                                      MemberType  Definition
+----                                      ----------  ----------
 ...
-PSComputerName                            Property    string PSComputerName {get;}                                                                                                                    
+PSComputerName                            Property    string PSComputerName {get;}
 ...
-ServicePackMajorVersion                   Property    uint16 ServicePackMajorVersion {get;}                                                                                                           
+ServicePackMajorVersion                   Property    uint16 ServicePackMajorVersion {get;}
 ...
-Version                                   Property    string Version {get;}                                                                                                                           
+Version                                   Property    string Version {get;}
 ~~~
 
 Ok, so we have three of the values we're looking for in `CIM_OperatingSystem` and one in `CIM_BIOSElement`. Now we have to get them into one table. The first three values can simply be picked from `CIM_OperatingSystem` using `Select-Object`.
@@ -217,10 +222,10 @@ We're using the `Get-CimInstance` and `Select-Object` cmdlets a couple of times,
 `Get-Alias -Definition Get-CimInstance, Select-Object`
 
 ~~~
-CommandType     Name                                               Version    Source                                                                                                                  
------------     ----                                               -------    ------                                                                                                                  
-Alias           gcim -> Get-CimInstance                                                                                                                                                               
-Alias           select -> Select-Object                                                                                                                                                                
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Alias           gcim -> Get-CimInstance
+Alias           select -> Select-Object
 ~~~
 
 They do. So, here's our first stab at shortening our command line.

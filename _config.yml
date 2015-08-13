@@ -1,10 +1,30 @@
-# Site settings
-title: markw.me
-description: > # this means to ignore newlines until "baseurl:"
-  Techie bloke, knows a thing or two about computers, Windows platform specialist, app and web developer.
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://markw.me" # the base hostname & protocol for your site
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+#permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Mark Whitby
+tagline:          'Cloud // Automation // Code'
+description:      'Cloud &middot; Automation &middot; Code'
+
+url:              http://markw.me
+baseurl:          /
+
+author:
+  name:           'Mark Whitby'
+  url:            https://twitter.com/chipfat
+
+paginate:         5
+
+# Custom vars
+#version:          2.1.0
+
+#github:
+#  repo:           https://github.com/poole/hyde
+
 twitter_username: chipfat
 permalink: /:year/:month/:day/:title/
-# Build settings
-markdown: kramdown
