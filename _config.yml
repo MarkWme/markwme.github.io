@@ -26,3 +26,5 @@ paginate:         5
 
 twitter_username: chipfat
 permalink: /:year/:month/:day/:title/
+
+theme: jekyll-theme-cayman
