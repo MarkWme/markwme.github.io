@@ -4,12 +4,15 @@ title: About
 permalink: /about/
 ---
 
-Hi! I'm Mark Whitby, welcome to my blog! I've been working in the world of Enterprise IT for more than 25 years. I like writing code to automate stuff, I hate doing anything more than once!
+This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
 
-Most of my experience has been in the infrastructure side of things, working with Microsoft technologies and specialising in the Windows Server platform, PowerShell and Azure. I also like creating things and have developed iPhone Apps, Websites and API's using C#, .NET, Javascript and NodeJS.
+You can find the source code for Minima at GitHub:
+[jekyll][jekyll-organization] /
+[minima](https://github.com/jekyll/minima)
 
-I really should get out more.
+You can find the source code for Jekyll at GitHub:
+[jekyll][jekyll-organization] /
+[jekyll](https://github.com/jekyll/jekyll)
 
-Follow me on Twitter [@chipfat][Twitter]
 
-[Twitter]:	https://twitter.com/chipfat
+[jekyll-organization]: https://github.com/jekyll
