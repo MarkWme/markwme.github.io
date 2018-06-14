@@ -6,31 +6,10 @@
     <description>Recent content on Mark Whitby - Azure | Open Source | Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 14 Jun 2018 17:26:49 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 18 Jan 2017 09:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://markw.me/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Test</title>
-      <link>https://markw.me/test/</link>
-      <pubDate>Thu, 14 Jun 2018 17:26:49 +0100</pubDate>
-      
-      <guid>https://markw.me/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)</title>
-      <link>https://markw.me/deploying-kubernetes-on-azure-with-azure-kubernetes-service-aks/</link>
-      <pubDate>Thu, 14 Jun 2018 12:02:43 +0100</pubDate>
-      
-      <guid>https://markw.me/deploying-kubernetes-on-azure-with-azure-kubernetes-service-aks/</guid>
-      <description> With the ever increasing popularity of Kubernetes, cloud providers are now going out of their way to get you running Kubernetes on their platform.
-Installation is simple:
-az aks create --name wibble az aks create --name thisisaratherlongname --group reallycouldthisbeanylonger --someotheroption wowthisisreallygettingquitelongnow And also
-&amp;lt;section id=&amp;#34;main&amp;#34;&amp;gt; &amp;lt;div&amp;gt; &amp;lt;h1 id=&amp;#34;title&amp;#34;&amp;gt;{{ .Title }}&amp;lt;/h1&amp;gt; {{ range .Data.Pages }} {{ .Render &amp;#34;summary&amp;#34;}} {{ end }} &amp;lt;/div&amp;gt; &amp;lt;/section&amp;gt; </description>
-    </item>
     
     <item>
       <title>Going Serverless with Azure Functions and DocumentDB - Part 2</title>
