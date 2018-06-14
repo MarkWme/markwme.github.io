@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Mark Whitby">
+<meta name="description" content="Azure // Open Source // Code">
+<meta name="generator" content="Hugo 0.42.1" />
+<title>Getting Started with Bash on Ubuntu on Windows</title>
+<link rel="shortcut icon" href="https://markw.me/images/favicon.ico">
+<link rel="stylesheet" href="https://markw.me/css/style.css">
+<link rel="stylesheet" href="https://markw.me/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://markw.me/index.xml" rel="alternate" type="application/rss+xml" title="Mark Whitby - Azure | Open Source | Code" />
+
+
+<meta property="og:title" content="Getting Started with Bash on Ubuntu on Windows" />
+<meta property="og:description" content="Bash on Ubuntu on Windows. Now there&rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.
+People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/" />
+
+
+
+<meta property="article:published_time" content="2016-08-01T15:47:00&#43;01:00"/>
+
+<meta property="article:modified_time" content="2016-08-01T15:47:00&#43;01:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Getting Started with Bash on Ubuntu on Windows">
+<meta itemprop="description" content="Bash on Ubuntu on Windows. Now there&rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.
+People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux.">
+
+
+<meta itemprop="datePublished" content="2016-08-01T15:47:00&#43;01:00" />
+<meta itemprop="dateModified" content="2016-08-01T15:47:00&#43;01:00" />
+<meta itemprop="wordCount" content="782">
+
+
+
+<meta itemprop="keywords" content="windows,ubuntu,bash," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Getting Started with Bash on Ubuntu on Windows"/>
+<meta name="twitter:description" content="Bash on Ubuntu on Windows. Now there&rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.
+People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux."/>
+<meta name="twitter:site" content="@https://www.twitter.com/markwme"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://markw.me/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="https://markw.me/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Getting Started with Bash on Ubuntu on Windows</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        August 1, 2016
+        <br>
+        
+        
+            
+                <a href="https://markw.me/tags/windows">windows</a>
+            
+                <a href="https://markw.me/tags/ubuntu">ubuntu</a>
+            
+                <a href="https://markw.me/tags/bash">bash</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>Bash on Ubuntu on Windows. Now there&rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.</p>
+
+<p>People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux. Why? Because despite the best efforts of some fine folks who do their utmost to get various Linux based open source tools running on Windows, it can sometimes be a real effort to get things working. On quite a few occasions, I&rsquo;ve found some cool new tool with a handful of command line entries needed to get it working on Linux, or two pages of pre-requisites and hacks that are needed to get the same thing running on Windows. Or hitting the infamous Windows <strong><a href="https://github.com/nodejs/node-v0.x-archive/issues/6960">MAX_PATH limitation</a></strong>. Often it&rsquo;s just a lot less hassle to do it on a Linux box.</p>
+
+<p>With the Windows 10 Anniversary Update, Microsoft have added Bash support for Windows. Previously, there were ways to get a Linux-like environment up and running on Windows with something like <strong><a href="https://www.cygwin.com/">Cygwin</a></strong> but that still required binaries that were compiled to run on Windows. This is different. This is <strong>native Linux binaries, running on Windows</strong>. There&rsquo;s a lot of detail available on exactly how this has been implemented, <strong><a href="https://blogs.msdn.microsoft.com/commandline/2016/06/02/learn-more-about-bash-on-ubuntu-on-windows-and-the-windows-subsystem-for-linux/">here</a></strong> is a good place to start!</p>
+
+<h3 id="installing-bash-on-ubuntu-on-windows">Installing Bash on Ubuntu on Windows</h3>
+
+<p>At a minimum, you need to be running the <strong>Windows 10 Anniversary Update</strong>. This is the one released in August 2016, so if you have an older version of Windows, the first thing to do is upgrade.</p>
+
+<p>Next, Bash is only available to developers and is kept hidden away by default. Windows 10 Anniversary Update adds another great developer feature which is the &ldquo;Use developer features&rdquo; window.</p>
+
+<p><img src="/images/2016/08/buw-devmode-enabled.png" alt="Windows 10 Developer Features" /></p>
+
+<p>As an &ldquo;advanced&rdquo; user of Windows, there&rsquo;s a ritual I go through on every new install where I go into a dozen or so different menus or windows and change a bunch of settings to make Windows more developer friendly. In the Anniversary Update, a lot of these settings have all been brought together into this one place. To get to this window, just type <code>developer</code> into the Start Menu or Cortana&rsquo;s search bar. To install Bash, the item of interest is the radio button that says &ldquo;Developer Mode&rdquo;.</p>
+
+<p>After you&rsquo;ve enabled Developer Mode, there&rsquo;s another feature you need to enable. In the Start Menu or Cortana&rsquo;s search bar, type <code>features</code> and look for the &ldquo;Turn Windows features on or off&rdquo; option. Then, from the window that appears look for the &ldquo;Windows Subsystem for Linux(Beta)&rdquo; entry.</p>
+
+<p><img src="/images/2016/08/Windows-Subsystem-for-Linux-1.png" alt="Windows Subsystem for Linux" /></p>
+
+<p>Once you&rsquo;ve enabled this, you&rsquo;ll be prompted to reboot, so go ahead and do that.</p>
+
+<p>When you&rsquo;re back from the reboot, you&rsquo;re ready to get going with the installation of Bash. Click the Start Menu or Cortana&rsquo;s search bar and type <code>bash</code>. You should see a bash command like below.</p>
+
+<p><img src="/images/2016/08/buw-bash-startmenu.png" alt="bash" /></p>
+
+<p>Next, you&rsquo;ll see a command window with the following</p>
+
+<p><img src="/images/2016/08/buw-install-confirm.png" alt="bash-install-confirm" /></p>
+
+<p>You&rsquo;re about to install Linux binaries provided by Canonical, so you&rsquo;re asked to confirm that this is indeed what you want to do. If you&rsquo;re ready enter &ldquo;y&rdquo; and sit back for a short while. After a bit, you&rsquo;ll be prompted to enter a username and password for the default UNIX user.</p>
+
+<p><img src="/images/2016/08/buw-install-unix-username.png" alt="bash-unix-user" /></p>
+
+<p>As the prompt says, this doesn&rsquo;t have to be the same username that you use to login to Windows. This is a new account that will be used for the Linux subsystem. More details on how this works can be found at <strong><a href="https://aka.ms/wslusers">https://aka.ms/wslusers</a></strong>.</p>
+
+<p>And that&rsquo;s it. You now have Bash on Ubuntu on Windows. Want to prove it? Just try doing something Linux-y! For example, take my earlier blog post on <strong><a href="http://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/">installing the Azure CLI on Linux</a></strong>. Let&rsquo;s install the Azure CLI in Bash.</p>
+
+<p>First, add the repository for Node.js</p>
+
+<pre><code>curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+</code></pre>
+
+<p>Once that finishes, install Node.js</p>
+
+<pre><code>sudo apt-get install -y nodejs
+</code></pre>
+
+<p>And finally lets install the Azure CLI</p>
+
+<pre><code>sudo npm install azure-cli -g
+</code></pre>
+
+<p>We&rsquo;ll go through the Azure login process and then list the resource groups we can see in our Azure subscription.</p>
+
+<pre><code>azure group list
+</code></pre>
+
+<p><img src="/images/2016/08/buw-azurecli-rglist.png" alt="azure-group-list" /></p>
+
+<p>Or, if we&rsquo;re feeling adventurous, we could try something like using tmux to split the window and run multiple consoles in one!</p>
+
+<p><img src="/images/2016/08/buw-tmux.png" alt="tmux" /></p>
+
+<p>This is a great feature which I think will really help people improve their productivity. Being able to run Linux commands has often been the reason why developers will switch to a Mac. I know I&rsquo;ve certainly considered it. But this pretty much negates that argument for the vast majority of developers.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/@MarkWme">
+    <img class="avatar" src="https://markw.me/images/avatar.png">
+    <div>
+        <span class="dark">Mark Whitby</span>
+        <span>I&#39;m an Azure Application Development Solution Architect at Microsoft.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmarkw.me%2fgetting-started-with-bash-on-ubuntu-on-windows%2f - Getting%20Started%20with%20Bash%20on%20Ubuntu%20on%20Windows by @%40MarkWme"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/deploying-kubernetes-on-azure-with-azure-kubernetes-service-aks/">Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)<aside class="dates">Jun 14 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-2/">Going Serverless with Azure Functions and DocumentDB - Part 2<aside class="dates">Jan 18 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-1/">Going Serverless with Azure Functions and DocumentDB - Part 1<aside class="dates">Jan 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/installing-azure-cli-on-redhat-enterprise-linux-7-2/">Installing Azure CLI on RedHat Enterprise Linux 7.2<aside class="dates">Jun 20 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/markwme">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/markwme">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.youtube.com/c/cloudtechtv">
+        <i class="fa fa-youtube"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Mark Whitby
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://markw.me/js/main.js"></script>
+<script src="https://markw.me/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Mark Whitby">
+<meta name="description" content="Azure // Open Source // Code">
+<meta name="generator" content="Hugo 0.42.1" />
+<title>Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)</title>
+<link rel="shortcut icon" href="https://markw.me/images/favicon.ico">
+<link rel="stylesheet" href="https://markw.me/css/style.css">
+<link rel="stylesheet" href="https://markw.me/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://markw.me/index.xml" rel="alternate" type="application/rss+xml" title="Mark Whitby - Azure | Open Source | Code" />
+
+
+<meta property="og:title" content="Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)" />
+<meta property="og:description" content="Kubernetes the **easy** way" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://markw.me/deploying-kubernetes-on-azure-with-azure-kubernetes-service-aks/" />
+
+
+
+<meta property="article:published_time" content="2018-06-14T12:02:43&#43;01:00"/>
+
+<meta property="article:modified_time" content="2018-06-14T12:02:43&#43;01:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)">
+<meta itemprop="description" content="Kubernetes the **easy** way">
+
+
+<meta itemprop="datePublished" content="2018-06-14T12:02:43&#43;01:00" />
+<meta itemprop="dateModified" content="2018-06-14T12:02:43&#43;01:00" />
+<meta itemprop="wordCount" content="62">
+
+
+
+<meta itemprop="keywords" content="azure,kubernetes,k8s,aks," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)"/>
+<meta name="twitter:description" content="Kubernetes the **easy** way"/>
+<meta name="twitter:site" content="@https://www.twitter.com/markwme"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://markw.me/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="https://markw.me/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)</h1>
+        <h2 class="subtitle">Kubernetes the <strong>easy</strong> way</h2>
+        <h2 class="headline">
+        June 14, 2018
+        <br>
+        
+        
+            
+                <a href="https://markw.me/tags/azure">azure</a>
+            
+                <a href="https://markw.me/tags/kubernetes">kubernetes</a>
+            
+                <a href="https://markw.me/tags/k8s">k8s</a>
+            
+                <a href="https://markw.me/tags/aks">aks</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p><img src="/images/Kubernetes.png" alt="Kubernetes Logo" /></p>
+
+<p>With the ever increasing popularity of Kubernetes, cloud providers are now going out of their way to get you running Kubernetes on their platform.</p>
+
+<p>Installation is simple:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">az aks create --name wibble
+az aks create --name thisisaratherlongname --group reallycouldthisbeanylonger --someotheroption wowthisisreallygettingquitelongnow</code></pre></div>
+
+<p>And also</p>
+
+<h2 id="hahahugoshortcode-0xc4202f0000-2-hbhb"><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">section</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;main&#34;</span>&gt;
+  &lt;<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;title&#34;</span>&gt;{{ .Title }}&lt;/<span style="color:#f92672">h1</span>&gt;
+    {{ range .Data.Pages }}
+      {{ .Render &#34;summary&#34;}}
+    {{ end }}
+  &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">section</span>&gt;</code></pre></div></h2>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/@MarkWme">
+    <img class="avatar" src="https://markw.me/images/avatar.png">
+    <div>
+        <span class="dark">Mark Whitby</span>
+        <span>I&#39;m an Azure Application Development Solution Architect at Microsoft.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmarkw.me%2fdeploying-kubernetes-on-azure-with-azure-kubernetes-service-aks%2f - Deploying%20Kubernetes%20on%20Azure%20with%20Azure%20Kubernetes%20Service%20%28AKS%29 by @%40MarkWme"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-2/">Going Serverless with Azure Functions and DocumentDB - Part 2<aside class="dates">Jan 18 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-1/">Going Serverless with Azure Functions and DocumentDB - Part 1<aside class="dates">Jan 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/getting-started-with-bash-on-ubuntu-on-windows/">Getting Started with Bash on Ubuntu on Windows<aside class="dates">Aug 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/installing-azure-cli-on-redhat-enterprise-linux-7-2/">Installing Azure CLI on RedHat Enterprise Linux 7.2<aside class="dates">Jun 20 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/markwme">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/markwme">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.youtube.com/c/cloudtechtv">
+        <i class="fa fa-youtube"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Mark Whitby
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://markw.me/js/main.js"></script>
+<script src="https://markw.me/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

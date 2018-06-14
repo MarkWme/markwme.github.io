@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows on Mark Whitby - Azure | Open Source | Code</title>
+    <link>https://markw.me/tags/windows/</link>
+    <description>Recent content in Windows on Mark Whitby - Azure | Open Source | Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 01 Aug 2016 15:47:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://markw.me/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting Started with Bash on Ubuntu on Windows</title>
+      <link>https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/</link>
+      <pubDate>Mon, 01 Aug 2016 15:47:00 +0100</pubDate>
+      
+      <guid>https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/</guid>
+      <description>Bash on Ubuntu on Windows. Now there&amp;rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.
+People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux.</description>
+    </item>
+    
+  </channel>
+</rss>

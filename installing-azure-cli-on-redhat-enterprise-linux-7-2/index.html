@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Mark Whitby">
+<meta name="description" content="Azure // Open Source // Code">
+<meta name="generator" content="Hugo 0.42.1" />
+<title>Installing Azure CLI on RedHat Enterprise Linux 7.2</title>
+<link rel="shortcut icon" href="https://markw.me/images/favicon.ico">
+<link rel="stylesheet" href="https://markw.me/css/style.css">
+<link rel="stylesheet" href="https://markw.me/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://markw.me/index.xml" rel="alternate" type="application/rss+xml" title="Mark Whitby - Azure | Open Source | Code" />
+
+
+<meta property="og:title" content="Installing Azure CLI on RedHat Enterprise Linux 7.2" />
+<meta property="og:description" content="One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&rsquo;s no longer the case.
+The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/" />
+
+
+
+<meta property="article:published_time" content="2016-06-20T12:11:00&#43;01:00"/>
+
+<meta property="article:modified_time" content="2016-06-20T12:11:00&#43;01:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Installing Azure CLI on RedHat Enterprise Linux 7.2">
+<meta itemprop="description" content="One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&rsquo;s no longer the case.
+The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms.">
+
+
+<meta itemprop="datePublished" content="2016-06-20T12:11:00&#43;01:00" />
+<meta itemprop="dateModified" content="2016-06-20T12:11:00&#43;01:00" />
+<meta itemprop="wordCount" content="697">
+
+
+
+<meta itemprop="keywords" content="azure,azurecli,cli,redhat," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Installing Azure CLI on RedHat Enterprise Linux 7.2"/>
+<meta name="twitter:description" content="One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&rsquo;s no longer the case.
+The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms."/>
+<meta name="twitter:site" content="@https://www.twitter.com/markwme"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://markw.me/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="https://markw.me/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Installing Azure CLI on RedHat Enterprise Linux 7.2</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        June 20, 2016
+        <br>
+        
+        
+            
+                <a href="https://markw.me/tags/azure">azure</a>
+            
+                <a href="https://markw.me/tags/azurecli">azurecli</a>
+            
+                <a href="https://markw.me/tags/cli">cli</a>
+            
+                <a href="https://markw.me/tags/redhat">redhat</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&rsquo;s no longer the case.</p>
+
+<p>The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms.  And it&rsquo;s open source too - check out the <a href="https://github.com/Azure/azure-xplat-cli">azure-xplat-cli github repo</a>!</p>
+
+<p>Installation is easy enough. Here&rsquo;s a walkthrough of installing the tools on a fresh, clean instance of RedHat Enterprise Linux 7.2.</p>
+
+<h3 id="install-node-js">Install Node.js</h3>
+
+<p>As the CLI is built with Node.js, you&rsquo;ll need to install that first. There are a couple of choices as to which version of Node you want to deploy and for most production / stable environments you&rsquo;ll likely want the LTS (Long Term Support) version of Node.  At the time of writing, version 4.4.7 is the current LTS version (you can read more about Node.js versions here - <a href="https://github.com/nodejs/LTS#lts_schedule">https://github.com/nodejs/LTS#lts_schedule</a>).  The following command line will install the repo for the Node.js version 4.x LTS branch:</p>
+
+<pre><code>curl --silent --location https://rpm.nodesource.com/setup_4.x | sudo bash -
+</code></pre>
+
+<p>Note the placement of <code>sudo</code> in that command line. It&rsquo;s highly likely you&rsquo;ll need root privileges.  Once that&rsquo;s done, we can install Node.js</p>
+
+<pre><code>sudo yum -y install nodejs
+</code></pre>
+
+<p>And when that completes, we can check that Node.js is working like this</p>
+
+<pre><code>node --version
+</code></pre>
+
+<p><img src="/images/2016/07/node-version.png" alt="node-version" /></p>
+
+<h3 id="install-azure-command-line-tools">Install Azure Command Line Tools</h3>
+
+<p>Now that Node.js is running, we can use the NPM package manager to install the Azure CLI</p>
+
+<pre><code>sudo npm install azure-cli -g
+</code></pre>
+
+<p>Again, notice that we use <code>sudo</code> to run with root privileges. We also use the <code>-g</code> option on the end to ensure the package is installed globally. Once that&rsquo;s done, we can check if the Azure CLI is installed as follows:</p>
+
+<pre><code>azure --version
+</code></pre>
+
+<p><img src="/images/2016/07/azure-cli-version.png" alt="azure-cli-version" /></p>
+
+<p>Note that the first time you run the Azure CLI, you will be asked whether you want to opt in to data collection that&rsquo;s used to improve the tools. Select whichever option you prefer, but it you want to change it later you can do so with:</p>
+
+<pre><code>azure telemetry --disable
+</code></pre>
+
+<p>or <code>--enable</code> as required.</p>
+
+<h3 id="login-to-azure">Login to Azure</h3>
+
+<p>And that&rsquo;s it!  You now have the Azure cross platform command line tools installed and running.  So, let&rsquo;s just take this one step further.  Let&rsquo;s login to Azure and confirm we can see our resources as expected. In my case, I&rsquo;m using a Microsoft corporate account to access Azure and that requires some additional security measures. This might also apply to you if the Azure subscription you&rsquo;re using requires Multi Factor Authentication.</p>
+
+<p>Start with the following command</p>
+
+<pre><code>azure login
+</code></pre>
+
+<p>You should then be prompted to open a web browser and navigate to <a href="https://aka.ms/devicelogin">https://aka.ms/devicelogin</a> and enter a unique code that&rsquo;s just been generated for you. So, go do that, open any web browser on any device you have to hand, go to the URL and follow the instructions to enter the device code. Once you&rsquo;ve completed that, return to your command line and you should see a message that you&rsquo;re now successfully connected to your Azure subscription.</p>
+
+<p>If you&rsquo;ve been using Azure for a while, you&rsquo;ll know that a transition has been underway for some time between the &ldquo;old&rdquo; and &ldquo;new&rdquo; portals and with that, a transfer from the underlying &ldquo;Service Management&rdquo; to &ldquo;Resource Management&rdquo; models.  Resource Management (or Azure Resource Management - ARM) is the &ldquo;modern&rdquo; way, so lets ensure the CLI is in ARM mode</p>
+
+<pre><code>azure config mode arm
+</code></pre>
+
+<p><img src="/images/2016/07/azure-config-mode-arm.png" alt="azure-config-mode-arm" /></p>
+
+<p>And finally, to make sure our connection to Azure looks good, let&rsquo;s get a list of resource groups and make sure that matches what we&rsquo;re expecting to see.</p>
+
+<pre><code>azure group list
+</code></pre>
+
+<p><img src="/images/2016/07/azure-group-list.png" alt="azure-group-list" /></p>
+
+<p>Ta da! We&rsquo;re connected to our Azure subscription and we can fully manage our cloud resources. All from a RedHat Enterprise Linux server!</p>
+
+<h3 id="more-commands">More Commands</h3>
+
+<p>If you want to learn more Azure CLI commands, just type <code>azure help</code> and work your way from there. Or, you can take a look at this article in the Azure documentation - <a href="https://azure.microsoft.com/en-gb/documentation/articles/azure-cli-arm-commands/">https://azure.microsoft.com/en-gb/documentation/articles/azure-cli-arm-commands/</a></p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/@MarkWme">
+    <img class="avatar" src="https://markw.me/images/avatar.png">
+    <div>
+        <span class="dark">Mark Whitby</span>
+        <span>I&#39;m an Azure Application Development Solution Architect at Microsoft.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmarkw.me%2finstalling-azure-cli-on-redhat-enterprise-linux-7-2%2f - Installing%20Azure%20CLI%20on%20RedHat%20Enterprise%20Linux%207.2 by @%40MarkWme"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/deploying-kubernetes-on-azure-with-azure-kubernetes-service-aks/">Deploying Kubernetes on Azure with Azure Kubernetes Service (AKS)<aside class="dates">Jun 14 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-2/">Going Serverless with Azure Functions and DocumentDB - Part 2<aside class="dates">Jan 18 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/going-serverless-with-azure-functions-and-documentdb-part-1/">Going Serverless with Azure Functions and DocumentDB - Part 1<aside class="dates">Jan 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/getting-started-with-bash-on-ubuntu-on-windows/">Getting Started with Bash on Ubuntu on Windows<aside class="dates">Aug 1 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/markwme">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/markwme">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.youtube.com/c/cloudtechtv">
+        <i class="fa fa-youtube"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Mark Whitby
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://markw.me/js/main.js"></script>
+<script src="https://markw.me/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>
