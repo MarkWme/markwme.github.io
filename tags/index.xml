@@ -6,15 +6,24 @@
     <description>Recent content in Tags on Mark Whitby - Azure | Open Source | Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Wed, 18 Jan 2017 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 14 Jun 2018 12:02:43 +0100</lastBuildDate>
     
 	<atom:link href="https://markw.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Aks</title>
+      <link>https://markw.me/tags/aks/</link>
+      <pubDate>Thu, 14 Jun 2018 12:02:43 +0100</pubDate>
+      
+      <guid>https://markw.me/tags/aks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Azure</title>
       <link>https://markw.me/tags/azure/</link>
-      <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
+      <pubDate>Thu, 14 Jun 2018 12:02:43 +0100</pubDate>
       
       <guid>https://markw.me/tags/azure/</guid>
       <description></description>
@@ -53,6 +62,24 @@
       <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
       
       <guid>https://markw.me/tags/functions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s</title>
+      <link>https://markw.me/tags/k8s/</link>
+      <pubDate>Thu, 14 Jun 2018 12:02:43 +0100</pubDate>
+      
+      <guid>https://markw.me/tags/k8s/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://markw.me/tags/kubernetes/</link>
+      <pubDate>Thu, 14 Jun 2018 12:02:43 +0100</pubDate>
+      
+      <guid>https://markw.me/tags/kubernetes/</guid>
       <description></description>
     </item>
     
