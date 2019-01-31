@@ -3,98 +3,98 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-2/</loc>
+    <loc>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-2/</loc>
     <lastmod>2017-01-18T09:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-1/</loc>
+    <loc>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-1/</loc>
     <lastmod>2017-01-17T09:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://example.com/getting-started-with-bash-on-ubuntu-on-windows/</loc>
+    <loc>https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/</loc>
     <lastmod>2016-08-01T15:47:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://example.com/installing-azure-cli-on-redhat-enterprise-linux-7-2/</loc>
+    <loc>https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/</loc>
     <lastmod>2016-06-20T12:11:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://example.com/tags/azure/</loc>
+    <loc>https://markw.me/tags/azure/</loc>
     <lastmod>2017-01-18T09:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/azurecli/</loc>
-    <lastmod>2016-06-20T12:11:00+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/bash/</loc>
-    <lastmod>2016-08-01T15:47:00+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/cli/</loc>
+    <loc>https://markw.me/tags/azurecli/</loc>
     <lastmod>2016-06-20T12:11:00+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/functions/</loc>
-    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/</loc>
-    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/post/</loc>
-    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/redhat/</loc>
-    <lastmod>2016-06-20T12:11:00+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/serverless/</loc>
-    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/</loc>
-    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://example.com/tags/ubuntu/</loc>
+    <loc>https://markw.me/tags/bash/</loc>
     <lastmod>2016-08-01T15:47:00+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/windows/</loc>
+    <loc>https://markw.me/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/cli/</loc>
+    <lastmod>2016-06-20T12:11:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/functions/</loc>
+    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/</loc>
+    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/post/</loc>
+    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/redhat/</loc>
+    <lastmod>2016-06-20T12:11:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/serverless/</loc>
+    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/</loc>
+    <lastmod>2017-01-18T09:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/ubuntu/</loc>
+    <lastmod>2016-08-01T15:47:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://markw.me/tags/windows/</loc>
     <lastmod>2016-08-01T15:47:00+01:00</lastmod>
     <priority>0</priority>
   </url>

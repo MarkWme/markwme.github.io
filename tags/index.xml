@@ -2,92 +2,92 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Mark Whitby</title>
-    <link>https://example.com/tags/</link>
+    <link>https://markw.me/tags/</link>
     <description>Recent content in Tags on Mark Whitby</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 18 Jan 2017 09:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://markw.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Azure</title>
-      <link>https://example.com/tags/azure/</link>
+      <link>https://markw.me/tags/azure/</link>
       <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
       
-      <guid>https://example.com/tags/azure/</guid>
+      <guid>https://markw.me/tags/azure/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Azurecli</title>
-      <link>https://example.com/tags/azurecli/</link>
+      <link>https://markw.me/tags/azurecli/</link>
       <pubDate>Mon, 20 Jun 2016 12:11:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/azurecli/</guid>
+      <guid>https://markw.me/tags/azurecli/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Bash</title>
-      <link>https://example.com/tags/bash/</link>
+      <link>https://markw.me/tags/bash/</link>
       <pubDate>Mon, 01 Aug 2016 15:47:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/bash/</guid>
+      <guid>https://markw.me/tags/bash/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Cli</title>
-      <link>https://example.com/tags/cli/</link>
+      <link>https://markw.me/tags/cli/</link>
       <pubDate>Mon, 20 Jun 2016 12:11:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/cli/</guid>
+      <guid>https://markw.me/tags/cli/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Functions</title>
-      <link>https://example.com/tags/functions/</link>
+      <link>https://markw.me/tags/functions/</link>
       <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
       
-      <guid>https://example.com/tags/functions/</guid>
+      <guid>https://markw.me/tags/functions/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Redhat</title>
-      <link>https://example.com/tags/redhat/</link>
+      <link>https://markw.me/tags/redhat/</link>
       <pubDate>Mon, 20 Jun 2016 12:11:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/redhat/</guid>
+      <guid>https://markw.me/tags/redhat/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Serverless</title>
-      <link>https://example.com/tags/serverless/</link>
+      <link>https://markw.me/tags/serverless/</link>
       <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
       
-      <guid>https://example.com/tags/serverless/</guid>
+      <guid>https://markw.me/tags/serverless/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ubuntu</title>
-      <link>https://example.com/tags/ubuntu/</link>
+      <link>https://markw.me/tags/ubuntu/</link>
       <pubDate>Mon, 01 Aug 2016 15:47:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/ubuntu/</guid>
+      <guid>https://markw.me/tags/ubuntu/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Windows</title>
-      <link>https://example.com/tags/windows/</link>
+      <link>https://markw.me/tags/windows/</link>
       <pubDate>Mon, 01 Aug 2016 15:47:00 +0100</pubDate>
       
-      <guid>https://example.com/tags/windows/</guid>
+      <guid>https://markw.me/tags/windows/</guid>
       <description></description>
     </item>
     
