@@ -1,111 +1,49 @@
-<!DOCTYPE html>
-<html lang="en-gb">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Mark Whitby">
-<meta name="description" content="Azure // Open Source // Code">
-<meta name="generator" content="Hugo 0.42.1" />
-<title>Going Serverless with Azure Functions and DocumentDB - Part 1</title>
-<link rel="shortcut icon" href="https://markw.me/images/favicon.ico">
-<link rel="stylesheet" href="https://markw.me/css/style.css">
-<link rel="stylesheet" href="https://markw.me/css/highlight.css">
-
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-
-
-
-<link href="https://markw.me/index.xml" rel="alternate" type="application/rss+xml" title="Mark Whitby - Azure | Open Source | Code" />
-
-
-<meta property="og:title" content="Going Serverless with Azure Functions and DocumentDB - Part 1" />
-<meta property="og:description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
-I came up with the following solution." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-1/" />
-
-
-
-<meta property="article:published_time" content="2017-01-17T09:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2017-01-17T09:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="Going Serverless with Azure Functions and DocumentDB - Part 1">
-<meta itemprop="description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
-I came up with the following solution.">
-
-
-<meta itemprop="datePublished" content="2017-01-17T09:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2017-01-17T09:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2313">
-
-
-
-<meta itemprop="keywords" content="azure,functions,serverless," />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Going Serverless with Azure Functions and DocumentDB - Part 1"/>
-<meta name="twitter:description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
-I came up with the following solution."/>
-<meta name="twitter:site" content="@https://www.twitter.com/markwme"/>
-
-
-    </head>
-<body>
-    <nav class="main-nav">
-	
-		<a href='https://markw.me/'> <span class="arrow">←</span>Home</a>
-	
-
-	
- 		<a href='/about/'>About</a>
-  	
-
-	
-		<a class="cta" href="https://markw.me/index.xml">Subscribe</a>
-	
-</nav>
-
-    <section id="wrapper">
+<!doctype html>
+<html>
+  <head>
+    <title>Going Serverless with Azure Functions and DocumentDB - Part 1 // Mark Whitby</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.53" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Mark Whitby" />
+    <meta name="description" content="" />
+    <base href="https://example.com" />
+    <link rel="stylesheet" href="https://example.com/css/main.min.89370bfdd636611d7283523dbb885b5a6137cf1749d5503e069b06f5cc55f5bb.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="/"><img class="app-header-avatar" src="./avatar.jpg" /></a>
+      <h1>Mark Whitby</h1>
+      <p>Azure // Open Source // Code</p>
+      <div class="app-header-social">
         
+          <a target="_blank" href="https://github.com/MarkWme"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
         
-<article class="post">
-    <header>
-        <h1>Going Serverless with Azure Functions and DocumentDB - Part 1</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        January 17, 2017
-        <br>
+          <a target="_blank" href="https://twitter.com/MarkWme"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
         
+          <a target="_blank" href="https://www.youtube.com/c/CloudTechTV"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-youtube"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg></a>
         
-            
-                <a href="https://markw.me/tags/azure">azure</a>
-            
-                <a href="https://markw.me/tags/functions">functions</a>
-            
-                <a href="https://markw.me/tags/serverless">serverless</a>
-            
-        
-        
-        </h2>
+      </div>
     </header>
-    <section id="post-body">
-        
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Going Serverless with Azure Functions and DocumentDB - Part 1</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Jan 17, 2017
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          11 min read
+        </div><div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+          <a class="tag" href="https://example.com/tags/azure/">Azure</a><a class="tag" href="https://example.com/tags/functions/">Functions</a><a class="tag" href="https://example.com/tags/serverless/">Serverless</a></div></div>
+    </header>
+    <div class="post-content">
+      
 
 <p>Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.</p>
 
@@ -167,14 +105,11 @@ during development to see what&rsquo;s going on in the Azure Storage Queue that 
 <li><strong>function.json</strong> provides some configuration information for our function, including details of its inputs and outputs.</li>
 </ul>
 
-<p>At this point, you have a fully working Azure Function. It&rsquo;s a timer function and it&rsquo;s configured to fire every five minutes. If you click the <strong>Run</strong> button at the top of the code panel, the function will run. Nothing will happen, but if you click <strong>Logs</strong> near the top right, you&rsquo;ll get a log panel appear at the bottom and in there you should see something like:</p>
-
-<pre><code>2017-01-17T11:25:00.013 Function started (Id=de84439b-b897-4890-8803-4ecfd59a670d)
-2017-01-17T11:25:00.013 C# Timer trigger function executed at: 1/17/2017 11:25:00 AM
-2017-01-17T11:25:00.013 Function completed (Success, Id=de84439b-b897-4890-8803-4ecfd59a670d)
-</code></pre>
-
-<p>The second line in the log entry is the one that&rsquo;s written out by our function. So, let&rsquo;s get this function doing something more interesting than just writing to a log.</p>
+<p>At this point, you have a fully working Azure Function. It&rsquo;s a timer function and it&rsquo;s configured to fire every five minutes. If you click the <strong>Run</strong> button at the top of the code panel, the function will run. Nothing will happen, but if you click <strong>Logs</strong> near the top right, you&rsquo;ll get a log panel appear at the bottom and in there you should see something like:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-systemd" data-lang="systemd">    <span style="color:#a6e22e">2017-01-17T11:25:00.013 Function started (Id</span><span style="color:#f92672">=</span><span style="color:#e6db74">de84439b-b897-4890-8803-4ecfd59a670d)</span>
+    <span style="color:#960050;background-color:#1e0010">2017-01-17T11:25:00.013</span> <span style="color:#960050;background-color:#1e0010">C</span><span style="color:#75715e"># Timer trigger function executed at: 1/17/2017 11:25:00 AM</span>
+    <span style="color:#a6e22e">2017-01-17T11:25:00.013 Function completed (Success, Id</span><span style="color:#f92672">=</span><span style="color:#e6db74">de84439b-b897-4890-8803-4ecfd59a670d)</span></code></pre></div>
+The second line in the log entry is the one that&rsquo;s written out by our function. So, let&rsquo;s get this function doing something more interesting than just writing to a log.</p>
 
 <h3 id="3-modify-the-function-configuration">3. Modify the Function Configuration</h3>
 
@@ -224,27 +159,25 @@ during development to see what&rsquo;s going on in the Azure Storage Queue that 
 
 <p>The <strong>Message parameter name</strong> will be a parameter in our code which will contain the data we want to place into the queue. The <strong>Queue Name</strong> is the name of the queue we will be placing our data into. The <strong>Storage account connection</strong> is the name of an environment variable in the Azure Function App which contains the connection string for our storage account. The default values will be fine for our purposes, so click the <strong>Save</strong> button.</p>
 
-<p>If you click back to the <strong>Develop</strong> view and open <code>function.json</code> in the Code panel, you&rsquo;ll see that the configuration has been updated:</p>
-
-<pre><code>{
-  &quot;bindings&quot;: [
+<p>If you click back to the <strong>Develop</strong> view and open <code>function.json</code> in the Code panel, you&rsquo;ll see that the configuration has been updated:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;bindings&#34;</span>: [
     {
-      &quot;name&quot;: &quot;myTimer&quot;,
-      &quot;type&quot;: &quot;timerTrigger&quot;,
-      &quot;direction&quot;: &quot;in&quot;,
-      &quot;schedule&quot;: &quot;0 0 * * * *&quot;
+      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;myTimer&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;timerTrigger&#34;</span>,
+      <span style="color:#f92672">&#34;direction&#34;</span>: <span style="color:#e6db74">&#34;in&#34;</span>,
+      <span style="color:#f92672">&#34;schedule&#34;</span>: <span style="color:#e6db74">&#34;0 0 * * * *&#34;</span>
     },
     {
-      &quot;type&quot;: &quot;queue&quot;,
-      &quot;name&quot;: &quot;outputQueueItem&quot;,
-      &quot;queueName&quot;: &quot;outqueue&quot;,
-      &quot;connection&quot;: &quot;AzureWebJobsStorage&quot;,
-      &quot;direction&quot;: &quot;out&quot;
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;queue&#34;</span>,
+      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;outputQueueItem&#34;</span>,
+      <span style="color:#f92672">&#34;queueName&#34;</span>: <span style="color:#e6db74">&#34;outqueue&#34;</span>,
+      <span style="color:#f92672">&#34;connection&#34;</span>: <span style="color:#e6db74">&#34;AzureWebJobsStorage&#34;</span>,
+      <span style="color:#f92672">&#34;direction&#34;</span>: <span style="color:#e6db74">&#34;out&#34;</span>
     }
   ],
-  &quot;disabled&quot;: false
-}
-</code></pre>
+  <span style="color:#f92672">&#34;disabled&#34;</span>: <span style="color:#66d9ef">false</span>
+}</code></pre></div></p>
 
 <p>Our <code>in</code> bindings are still there, but we now also have an <code>out</code> binding for the queue. You&rsquo;ll notice that the timer schedule has been modified as well.</p>
 
@@ -260,17 +193,14 @@ during development to see what&rsquo;s going on in the Azure Storage Queue that 
 
 <h3 id="5-write-the-code">5. Write the Code</h3>
 
-<p>We&rsquo;re ready to write some code! Return to the Azure Portal and make sure you&rsquo;re back in the <strong>Develop</strong> view with the <strong>Code</strong> panel visible. If it&rsquo;s not open already, open the <strong>View Files</strong> panel and make sure <code>run.csx</code> is selected. It should currently look like this:</p>
+<p>We&rsquo;re ready to write some code! Return to the Azure Portal and make sure you&rsquo;re back in the <strong>Develop</strong> view with the <strong>Code</strong> panel visible. If it&rsquo;s not open already, open the <strong>View Files</strong> panel and make sure <code>run.csx</code> is selected. It should currently look like this:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
 
-<pre><code>using System;
-
-public static void Run(TimerInfo myTimer, TraceWriter log)
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Run(TimerInfo myTimer, TraceWriter log)
 {
-    log.Info($&quot;C# Timer trigger function executed at: {DateTime.Now}&quot;);    
-}
-</code></pre>
-
-<p>We need to add in the output parameter which we do by adding <code>outputQueueItem</code> as follows</p>
+    log.Info(<span style="color:#e6db74">$&#34;C# Timer trigger function executed at: {DateTime.Now}&#34;</span>);    
+}</code></pre></div>
+We need to add in the output parameter which we do by adding <code>outputQueueItem</code> as follows</p>
 
 <pre><code>public static void Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQueueItem, TraceWriter log)
 </code></pre>
@@ -317,33 +247,30 @@ using Newtonsoft.Json.Linq;
 
 <p>The really nice thing about functions is that simply adding to my <code>outputQueueItem</code> collection will result in the data being written to the queue. I don&rsquo;t need to write any code, or include any external assemblies to specifically perform the write of the data to Azure Queue Storage. When the function completes, the content of <code>outputQueueItem</code> will be sent to the queue we specified in the <code>function.json</code> file.</p>
 
-<p>Here&rsquo;s our complete code:</p>
+<p>Here&rsquo;s our complete code:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#960050;background-color:#1e0010">#</span>r <span style="color:#e6db74">&#34;Newtonsoft.Json&#34;</span>
 
-<pre><code>#r &quot;Newtonsoft.Json&quot;
+<span style="color:#66d9ef">using</span> System;
+<span style="color:#66d9ef">using</span> Newtonsoft.Json;
+<span style="color:#66d9ef">using</span> Newtonsoft.Json.Linq;
 
-using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-public static async Task Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQueueItem, TraceWriter log)
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> Task Run(TimerInfo myTimer, ICollector&lt;<span style="color:#66d9ef">string</span>&gt; outputQueueItem, TraceWriter log)
 {
-    HttpClient client = new HttpClient();
-    client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(&quot;Mozilla&quot;, &quot;5.0&quot;));
-    JArray response = JArray.Parse(await client.GetStringAsync(&quot;https://api.github.com/organizations?per_page=5&quot;));
-    foreach (JObject org in response)
+    HttpClient client = <span style="color:#66d9ef">new</span> HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Add(<span style="color:#66d9ef">new</span> System.Net.Http.Headers.ProductInfoHeaderValue(<span style="color:#e6db74">&#34;Mozilla&#34;</span>, <span style="color:#e6db74">&#34;5.0&#34;</span>));
+    JArray response = JArray.Parse(<span style="color:#66d9ef">await</span> client.GetStringAsync(<span style="color:#e6db74">&#34;https://api.github.com/organizations?per_page=5&#34;</span>));
+    <span style="color:#66d9ef">foreach</span> (JObject org <span style="color:#66d9ef">in</span> response)
     {
-        object document = new {
-            id = org[&quot;id&quot;].ToString(),
-            orgname = org[&quot;login&quot;].ToString(),
-            repos = org[&quot;repos_url&quot;].ToString()
+        <span style="color:#66d9ef">object</span> document = <span style="color:#66d9ef">new</span> {
+            id = org<span style="color:#a6e22e">[&#34;id&#34;]</span>.ToString(),
+            orgname = org<span style="color:#a6e22e">[&#34;login&#34;]</span>.ToString(),
+            repos = org<span style="color:#a6e22e">[&#34;repos_url&#34;]</span>.ToString()
             };
-        string json = JsonConvert.SerializeObject(document);
+        <span style="color:#66d9ef">string</span> json = JsonConvert.SerializeObject(document);
         outputQueueItem.Add(json);
     }
-}
-</code></pre>
-
-<p>If we now click the <strong>Save</strong> button at the top of the <strong>Code</strong> panel, we will see a message in the logs indicating that the script has changed and, hopefully, that compilation has been successful:</p>
+}</code></pre></div>
+If we now click the <strong>Save</strong> button at the top of the <strong>Code</strong> panel, we will see a message in the logs indicating that the script has changed and, hopefully, that compilation has been successful:</p>
 
 <pre><code>2017-01-17T16:16:13.623 Script for function 'TimerTriggerCSharp1' changed. Reloading.
 2017-01-17T16:16:13.685 Compilation succeeded.
@@ -363,95 +290,13 @@ public static async Task Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQ
 
 <p>That&rsquo;s the first part of our solution completed. Next we need to process the items in the queue, query the data we need from the GitHub API and write it out to DocumentDB. All of which is really simple with Azure Functions! Find out how in <a href="https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-2/">Part 2</a>.</p>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/@MarkWme">
-    <img class="avatar" src="https://markw.me/images/avatar.png">
-    <div>
-        <span class="dark">Mark Whitby</span>
-        <span>I&#39;m an Azure Application Development Solution Architect at Microsoft.</span>
     </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmarkw.me%2fgoing-serverless-with-azure-functions-and-documentdb-part-1%2f - Going%20Serverless%20with%20Azure%20Functions%20and%20DocumentDB%20-%20Part%201 by @%40MarkWme"><span class="icon-twitter"> tweet</span></a>
+  </article>
 
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="/going-serverless-with-azure-functions-and-documentdb-part-2/">Going Serverless with Azure Functions and DocumentDB - Part 2<aside class="dates">Jan 18 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="/getting-started-with-bash-on-ubuntu-on-windows/">Getting Started with Bash on Ubuntu on Windows<aside class="dates">Aug 1 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="/installing-azure-cli-on-redhat-enterprise-linux-7-2/">Installing Azure CLI on RedHat Enterprise Linux 7.2<aside class="dates">Jun 20 2016</aside></a>
-        </li>
-    
-</ul>
-
-
-
-        <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://www.github.com/markwme">
-        <i class="fa fa-github"></i>
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/markwme">
-        <i class="fa fa-twitter"></i>
-    </a>
-    
-    <a class="symbol" href="https://www.youtube.com/c/cloudtechtv">
-        <i class="fa fa-youtube"></i>
-    </a>
-    
-
-
-</div>
-
-    
-    <p class="small">
-    
-        © Copyright 2018 Mark Whitby
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://markw.me/js/main.js"></script>
-<script src="https://markw.me/js/highlight.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-<script>
+    </main>
+  </body>
+  
+<script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -464,6 +309,4 @@ if (!doNotTrack) {
 }
 </script>
 
-
-</body>
 </html>

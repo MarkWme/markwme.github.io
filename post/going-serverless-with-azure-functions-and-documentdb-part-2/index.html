@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Going Serverless with Azure Functions and DocumentDB - Part 2 :: Terminal — A simple, retro theme for Hugo</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="In Part 1 we created an Azure Function that queried the GitHub API to retrieve a list of organisations and write the organisation name, id and URL for their GitHub repos to a queue in Azure Storage. In Part 2, we will write an Azure Function that listens for incoming messages on that queue, queries the GitHub API for details of the repos and then writes the data out to DocumentDB."/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-2/" />
+
+
+<link rel="stylesheet" href="https://example.com/assets/style.css">
+
+
+
+<link rel="stylesheet" href="https://example.com/style.css">
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://example.com/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://example.com/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Going Serverless with Azure Functions and DocumentDB - Part 2 :: Terminal — A simple, retro theme for Hugo" />
+<meta name="twitter:description" content="In Part 1 we created an Azure Function that queried the GitHub API to retrieve a list of organisations and write the organisation name, id and URL for their GitHub repos to a queue in Azure Storage. In Part 2, we will write an Azure Function that listens for incoming messages on that queue, queries the GitHub API for details of the repos and then writes the data out to DocumentDB." />
+<meta name="twitter:site" content="https://example.com/" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Going Serverless with Azure Functions and DocumentDB - Part 2 :: Terminal — A simple, retro theme for Hugo">
+<meta property="og:description" content="In Part 1 we created an Azure Function that queried the GitHub API to retrieve a list of organisations and write the organisation name, id and URL for their GitHub repos to a queue in Azure Storage. In Part 2, we will write an Azure Function that listens for incoming messages on that queue, queries the GitHub API for details of the repos and then writes the data out to DocumentDB." />
+<meta property="og:url" content="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-2/" />
+<meta property="og:site_name" content="Going Serverless with Azure Functions and DocumentDB - Part 2" />
+<meta property="og:image" content="">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2017-01-18 09:00:00 &#43;0000 GMT" />
+
+
+
+
+
+
+
+</head>
+<body class="">
+<div class="container">
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    Terminal
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about/">About</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/showcase">Showcase</a></li>
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h1 class="post-title"><a href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-2/">Going Serverless with Azure Functions and DocumentDB - Part 2</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        2017-01-18
+      </span>
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          #<a href="https://example.com/tags/azure">azure</a>&nbsp;
+        
+          #<a href="https://example.com/tags/functions">functions</a>&nbsp;
+        
+          #<a href="https://example.com/tags/serverless">serverless</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+
+<p>In <a href="https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-1/">Part 1</a> we created an Azure Function that queried the GitHub API to retrieve a list of organisations and write the organisation name, id and URL for their GitHub repos to a queue in Azure Storage. In Part 2, we will write an Azure Function that listens for incoming messages on that queue, queries the GitHub API for details of the repos and then writes the data out to DocumentDB.</p>
+
+<ol>
+<li>Pre-Requisites</li>
+</ol>
+
+<p>If you&rsquo;ve followed through Part 1, then you will already have these completed, but just as a reminder:</p>
+
+<ul>
+<li>First, it&rsquo;s highly recommended that you install the <a href="http://storageexplorer.com/">Azure Storage Explorer</a> as it&rsquo;s helpful
+during development to see what&rsquo;s going on in the Azure Storage Queue that we&rsquo;ll be using.</li>
+<li>Second, create a DocumentDB account in your Azure Subscription. You don&rsquo;t need to create a database or a collection as we can do that via the Azure Function.</li>
+</ul>
+
+<p>To create a DocumentDB account, go to the Azure Portal at <a href="https://portal.azure.com">https://portal.azure.com</a> and once signed-in click the <strong>+ New</strong> link at the top left, choose <strong>Databases</strong> and then <strong>NoSQL (DocumentDB)</strong></p>
+
+<p><img src="/images/2017/01/functions-create-documentdb.png" alt="" /></p>
+
+<p>For <strong>account ID</strong> you just need to provide a unique name for your DocumentDB account. Leave the <strong>NoSQL API</strong> value at its default of <strong>DocumentDB</strong> and choose the appropriate Azure subscription from the list. Provide a unique name for the Resource Group that will contain your DocumentDB resources and then select an Azure region from the <strong>Location</strong> list. If you don&rsquo;t know which region to choose, just pick one that&rsquo;s near you.</p>
+
+<h3 id="1-create-the-second-azure-function">1. Create the Second Azure Function</h3>
+
+<p>Open the <strong>Integrate</strong> view of the first Azure Function that we created and click on the <strong>Azure Storage Queue (outputQueueItem)</strong> that we created. This will display the configuration information for this output. Towards the bottom of the screen is an <strong>Actions</strong> section, with a big <strong>Go</strong> button next to a message that says &ldquo;Create a new function triggered by this output&rdquo;.</p>
+
+<p><img src="/images/2017/01/functions-outputs-actions.png" alt="" /></p>
+
+<p>As it suggests, this will create a new function that&rsquo;s set up to be trigged by the output from our current function. Click the <strong>Go</strong> button and you&rsquo;ll see the following:</p>
+
+<p><img src="/images/2017/01/functions-actions-create-queue-trigger.png" alt="" /></p>
+
+<p>As our output on the first function was a queue, the second function will consume that output, so its trigger has been set to <strong>queue</strong>. The details of the queue from our first function has also been pre-populated, so we don&rsquo;t need to change anything and can just accept the defaults by clicking the <strong>Create</strong> button.</p>
+
+<p>Several things now happen in quick succession!  First, our second function is created. It&rsquo;s configured with a trigger binding, set up to watch for messages arriving in the queue that our first function uses.</p>
+
+<pre><code>{
+  &quot;bindings&quot;: [
+    {
+      &quot;name&quot;: &quot;myQueueItem&quot;,
+      &quot;type&quot;: &quot;queueTrigger&quot;,
+      &quot;direction&quot;: &quot;in&quot;,
+      &quot;queueName&quot;: &quot;outqueue&quot;,
+      &quot;connection&quot;: &quot;AzureWebJobsStorage&quot;
+    }
+  ],
+  &quot;disabled&quot;: false
+}
+</code></pre>
+
+<p>Second, we have some starter code.</p>
+
+<pre><code>using System;
+
+public static void Run(string myQueueItem, TraceWriter log)
+{
+    log.Info($&quot;C# Queue trigger function processed: {myQueueItem}&quot;);
+}
+</code></pre>
+
+<p>When the function is triggered by a message arriving in the queue, the message is passed into our code via the <code>myQueueItem</code> parameter. The starter code simply writes the contents of that message out to the log.</p>
+
+<p>If you followed along with Part 1 of this tutorial, then a third thing will also have happened. Take a look at the logs:</p>
+
+<pre><code>2017-01-18T09:22:39.287 Function started (Id=d6d4b3f1-430a-4afc-999e-e8a06d1603b1)
+2017-01-18T09:22:39.287 C# Queue trigger function processed: {&quot;id&quot;:&quot;44&quot;,&quot;orgname&quot;:&quot;errfree&quot;,&quot;repos&quot;:&quot;https://api.github.com/orgs/errfree/repos&quot;}
+2017-01-18T09:22:39.287 Function completed (Success, Id=d6d4b3f1-430a-4afc-999e-e8a06d1603b1)
+2017-01-18T09:22:39.318 Function started (Id=4badfaee-6d33-43bc-ae25-65bbd162de6f)
+2017-01-18T09:22:39.318 C# Queue trigger function processed: {&quot;id&quot;:&quot;81&quot;,&quot;orgname&quot;:&quot;engineyard&quot;,&quot;repos&quot;:&quot;https://api.github.com/orgs/engineyard/repos&quot;}
+2017-01-18T09:22:39.318 Function completed (Success, Id=4badfaee-6d33-43bc-ae25-65bbd162de6f)
+2017-01-18T09:22:39.318 Function started (Id=9260fc39-6840-4936-ba95-7af3db1f4df3)
+2017-01-18T09:22:39.318 C# Queue trigger function processed: {&quot;id&quot;:&quot;119&quot;,&quot;orgname&quot;:&quot;ministrycentered&quot;,&quot;repos&quot;:&quot;https://api.github.com/orgs/ministrycentered/repos&quot;}
+2017-01-18T09:22:39.318 Function completed (Success, Id=9260fc39-6840-4936-ba95-7af3db1f4df3)
+2017-01-18T09:22:39.365 Function started (Id=5c3d4510-208b-41ab-b109-7e536d96278a)
+2017-01-18T09:22:39.365 C# Queue trigger function processed: {&quot;id&quot;:&quot;128&quot;,&quot;orgname&quot;:&quot;collectiveidea&quot;,&quot;repos&quot;:&quot;https://api.github.com/orgs/collectiveidea/repos&quot;}
+2017-01-18T09:22:39.365 Function completed (Success, Id=5c3d4510-208b-41ab-b109-7e536d96278a)
+2017-01-18T09:22:39.380 Function started (Id=25f2b51f-a6ef-4fdb-9f27-5877289a159f)
+2017-01-18T09:22:39.380 C# Queue trigger function processed: {&quot;id&quot;:&quot;144&quot;,&quot;orgname&quot;:&quot;ogc&quot;,&quot;repos&quot;:&quot;https://api.github.com/orgs/ogc/repos&quot;}
+2017-01-18T09:22:39.380 Function completed (Success, Id=25f2b51f-a6ef-4fdb-9f27-5877289a159f)
+</code></pre>
+
+<p>When the function was created, it was instantly triggered by the messages we&rsquo;d place into the queue with our first function.</p>
+
+<p>Now, I know this doesn&rsquo;t have a huge amount of functionality right now, but think about what just happened. We created a function to place messages into a queue. Then, with nothing more than a couple of mouse clicks and without writing any code, we created a second function that consumed those messages. How awesome is that?</p>
+
+<p>Ok, so let&rsquo;s make our function a little more, err, functional.</p>
+
+<h3 id="2-add-documentdb-output-bindings">2. Add DocumentDB Output Bindings</h3>
+
+<p>As we did with our first function, let&rsquo;s click on the <strong>Integrate</strong> button and then click <strong>+ New Output</strong> to add a new output binding. This time, we will select <strong>Azure DocumentDB Document</strong> from our list of options and then click <strong>Select</strong>.</p>
+
+<p><img src="/images/2017/01/functions-documentdb-output.png" alt="" /></p>
+
+<p>We will be prompted to provide configuration details for DocumentDB. The defaults are mostly fine for our purposes, but there are a couple of changes.</p>
+
+<p>First, check the box that says <strong>Would you like the DocumentDB database and collection to be created for you?</strong>.</p>
+
+<p>Second, we need to provide connection information. To the right of the box underneath <strong>DocumentDB account connection</strong> you will see a <strong><em>new</em></strong> link. Click that link and you will see a list of DocumentDB accounts. Select the one you created for this tutorial and the connection information will be configured for you. Then click the <strong>Save</strong> button to finish the configuration.</p>
+
+<p><img src="/images/2017/01/functions-documentdb-output-complete.png" alt="" /></p>
+
+<p>Click back on <strong>Develop</strong> and let&rsquo;s have a look at our <code>function.json</code> file.</p>
+
+<pre><code>{
+  &quot;bindings&quot;: [
+    {
+      &quot;name&quot;: &quot;myQueueItem&quot;,
+      &quot;type&quot;: &quot;queueTrigger&quot;,
+      &quot;direction&quot;: &quot;in&quot;,
+      &quot;queueName&quot;: &quot;outqueue&quot;,
+      &quot;connection&quot;: &quot;AzureWebJobsStorage&quot;
+    },
+    {
+      &quot;type&quot;: &quot;documentDB&quot;,
+      &quot;name&quot;: &quot;outputDocument&quot;,
+      &quot;databaseName&quot;: &quot;outDatabase&quot;,
+      &quot;collectionName&quot;: &quot;MyCollection&quot;,
+      &quot;createIfNotExists&quot;: true,
+      &quot;connection&quot;: &quot;t-dd-eun-fn170118_DOCUMENTDB&quot;,
+      &quot;direction&quot;: &quot;out&quot;
+    }
+  ],
+  &quot;disabled&quot;: false
+}
+</code></pre>
+
+<p>Now we have the input trigger and our DocumentDB output configured. In the log file, you may notice the following:</p>
+
+<pre><code>warning AF004: Missing binding argument named 'outputDocument'. Mismatched binding argument names may lead to function indexing errors.
+</code></pre>
+
+<p>This is warning us that we haven&rsquo;t provided an <code>outputDocument</code> parameter in our function. This parameter will eventually contain the data we want to write to DocumentDB. The <code>out</code> keyword is needed so that the parameter is passed by reference. So, let&rsquo;s add that to our method signature.</p>
+
+<pre><code>public static void Run(string myQueueItem, out object outputDocument, TraceWriter log)
+</code></pre>
+
+<p>Let&rsquo;s update our <code>run.csx</code> file and get it to do something more interesting. As with our first function, we need to handle some JSON formatted documents, so let&rsquo;s add the following to the top of our code.</p>
+
+<pre><code>#r &quot;Newtonsoft.Json&quot;
+
+using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+</code></pre>
+
+<p>The data we wrote to the queue was a JSON document which contained the organisation ID, name and URL for their repo list. That data is passed to our function through the <code>myQueueItem</code> parameter as a <code>string</code>. So, we&rsquo;ll parse that string and turn it into a JSON object and then make an HTTP call to GitHub using the repos URL in the message from the queue. The following code will achieve that:</p>
+
+<pre><code>JObject message = JObject.Parse(myQueueItem);
+HttpClient client = new HttpClient();
+client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(&quot;Mozilla&quot;, &quot;5.0&quot;));
+JArray response = JArray.Parse(await client.GetStringAsync(message[&quot;repos&quot;].ToString()));
+
+</code></pre>
+
+<p>And as the HTTP request uses <code>await</code> we need to make our method <code>async</code>, so let&rsquo;s update that.</p>
+
+<pre><code>public static async Task Run(string myQueueItem, out object outputDocument, TraceWriter log)
+</code></pre>
+
+<p>If you hit the <strong>Save</strong> button at this point, you should spot an error message in the log.</p>
+
+<pre><code>error CS1988: Async methods cannot have ref or out parameters
+</code></pre>
+
+<p>We have a minor issue here. We need to have an async method because we&rsquo;re using the <code>HttpClient</code> and it&rsquo;s designed to work asynchronously. However, this error is saying we cannot mix async methods and ref or out parameters.</p>
+
+<p>Fortunately, there is a simple workaround. Another way to get an Azure Function to write to its output bindings is to configure it to use the function&rsquo;s <code>return</code> value. This means that instead of Azure using the value of the <code>outputDocument</code> parameter, it will instead use whatever value the function returns when it&rsquo;s finished. So, let&rsquo;s change our method one more time, this time to remove the <code>outputDocument</code> parameter and as we&rsquo;ll now be returning a value, we&rsquo;ll need to specify what type of value we&rsquo;ll be returning.</p>
+
+<pre><code>public static async Task&lt;object&gt; Run(string myQueueItem, TraceWriter log)
+</code></pre>
+
+<p>The next piece of code will iterate through the returned results, extract the information we&rsquo;re interested in, create a new object with that information and add the objects to a <code>List</code>.</p>
+
+<pre><code>List&lt;object&gt; repoList = new List&lt;object&gt;();
+foreach (JObject repo in response)
+{
+    object repoInfo = new {
+        id = repo[&quot;id&quot;].ToString(),
+        name = repo[&quot;full_name&quot;].ToString(),
+        stars = repo[&quot;stargazers_count&quot;].ToString()
+    };
+    repoList.Add(repoInfo);
+}
+</code></pre>
+
+<p>Then we create the document that will be written to DocumentDB. This document contains the ID and name of the organisation and then the list of repos that we just built.</p>
+
+<pre><code>object document = new {
+    id = message[&quot;id&quot;].ToString(),
+    orgName = message[&quot;orgname&quot;].ToString(),
+    repos = repoList
+};
+</code></pre>
+
+<p>Finally, we convert the object into a JSON document and then terminate the function by returning that JSON document.</p>
+
+<pre><code>string json = JsonConvert.SerializeObject(document);
+return json;
+</code></pre>
+
+<p>The final code looks like this</p>
+
+<pre><code>#r &quot;Newtonsoft.Json&quot;
+
+using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+public static async Task&lt;object&gt; Run(string myQueueItem, TraceWriter log)
+{
+    JObject message = JObject.Parse(myQueueItem);
+    HttpClient client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(&quot;Mozilla&quot;, &quot;5.0&quot;));
+    JArray response = JArray.Parse(await client.GetStringAsync(message[&quot;repos&quot;].ToString()));
+    
+    List&lt;object&gt; repoList = new List&lt;object&gt;();
+    foreach (JObject repo in response)
+    {
+        object repoInfo = new {
+            id = repo[&quot;id&quot;].ToString(),
+            name = repo[&quot;full_name&quot;].ToString(),
+            stars = repo[&quot;stargazers_count&quot;].ToString()
+        };
+        repoList.Add(repoInfo);
+    }
+
+    object document = new {
+        id = message[&quot;id&quot;].ToString(),
+        orgName = message[&quot;orgname&quot;].ToString(),
+        repos = repoList
+    };
+
+    string json = JsonConvert.SerializeObject(document);
+    return json;
+}
+</code></pre>
+
+<p>Click the <strong>Save</strong> button to save the code. At this point, we&rsquo;re nearly ready to run, but we need to make one more change. Open the <code>function.json</code> file and modify the DocumentDB output binding so that the <code>name</code> is <code>$return</code>.</p>
+
+<pre><code>{
+  &quot;type&quot;: &quot;documentDB&quot;,
+  &quot;name&quot;: &quot;$return&quot;,
+  &quot;databaseName&quot;: &quot;outDatabase&quot;,
+  &quot;collectionName&quot;: &quot;MyCollection&quot;,
+  &quot;createIfNotExists&quot;: true,
+  &quot;connection&quot;: &quot;t-dd-eun-fn170117_DOCUMENTDB&quot;,
+  &quot;direction&quot;: &quot;out&quot;
+}
+</code></pre>
+
+<p>Now, we&rsquo;re ready to run. First, we need some data, so go to the first function that we created in Part 1 and click the <strong>Run</strong> button. Once it&rsquo;s completed, go back to our newly created second function. As it&rsquo;s triggered by new messages arriving in the queue, it should have run already. To confirm, you should see a bunch of messages in the log similar to this:</p>
+
+<pre><code>2017-01-18T09:43:59.200 Function started (Id=4ad152b4-d1bc-43e5-a733-d9ac82a31dd3)
+2017-01-18T09:44:00.611 Function completed (Success, Id=4ad152b4-d1bc-43e5-a733-d9ac82a31dd3)
+</code></pre>
+
+<p>And now to verify that everything worked. Let&rsquo;s go to our DocumentDB instance in the Azure Portal. From the <strong>Overview</strong> tab, first you should see that the database and collection we specified have been automatically created.</p>
+
+<p><img src="/images/2017/01/functions-docdb-collection.png" alt="" /></p>
+
+<p>Go to the <strong>Document Explorer</strong> tab and you should see a list of 5 ID&rsquo;s.</p>
+
+<p><img src="/images/2017/01/functions-docdb-documents-list.png" alt="" /></p>
+
+<p>Click on one of the ID&rsquo;s and you should see something like this.</p>
+
+<p><img src="/images/2017/01/functions-docdb-document.png" alt="" /></p>
+
+<p>The DocumentDB output provided by Azure Functions will create a new document in DocumentDB with a new document ID. If you provide an ID value as part of your document, then that value will be used, as we have done here. If a document already exists with that ID, the document will be overwritten.</p>
+
+<p>Again, this was all relatively simple to put together, especially the input from the Azure Storage queue and the output to DocumentDB, neither of which required us to write any code to retrieve the messages or write to the database.</p>
+
+<p>Azure Functions is very simple to use and quick to get up and running. At the time of writing, Azure Functions are still relatively new, so I can&rsquo;t wait to see how they develop.</p>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <span class="button next">
+              <a href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-1/">
+                <span class="button__text">Going Serverless with Azure Functions and DocumentDB - Part 1</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2019 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+    
+  </div>
+</footer>
+
+<script src="https://example.com/assets/main.js"></script>
+<script src="https://example.com/assets/prism.js"></script>
+
+  
+</div>
+
+</body>
+</html>

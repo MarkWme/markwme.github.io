@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Going Serverless with Azure Functions and DocumentDB - Part 1 :: Terminal — A simple, retro theme for Hugo</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
+I came up with the following solution."/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-1/" />
+
+
+<link rel="stylesheet" href="https://example.com/assets/style.css">
+
+
+
+<link rel="stylesheet" href="https://example.com/style.css">
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://example.com/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://example.com/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Going Serverless with Azure Functions and DocumentDB - Part 1 :: Terminal — A simple, retro theme for Hugo" />
+<meta name="twitter:description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
+I came up with the following solution." />
+<meta name="twitter:site" content="https://example.com/" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Going Serverless with Azure Functions and DocumentDB - Part 1 :: Terminal — A simple, retro theme for Hugo">
+<meta property="og:description" content="Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
+I came up with the following solution." />
+<meta property="og:url" content="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-1/" />
+<meta property="og:site_name" content="Going Serverless with Azure Functions and DocumentDB - Part 1" />
+<meta property="og:image" content="">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2017-01-17 09:00:00 &#43;0000 GMT" />
+
+
+
+
+
+
+
+</head>
+<body class="">
+<div class="container">
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    Terminal
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about/">About</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/showcase">Showcase</a></li>
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h1 class="post-title"><a href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-1/">Going Serverless with Azure Functions and DocumentDB - Part 1</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        2017-01-17
+      </span>
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          #<a href="https://example.com/tags/azure">azure</a>&nbsp;
+        
+          #<a href="https://example.com/tags/functions">functions</a>&nbsp;
+        
+          #<a href="https://example.com/tags/serverless">serverless</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+
+<p>Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.</p>
+
+<p>I came up with the following solution.</p>
+
+<ul>
+<li>Use one Azure Function to retrieve a list of organisations from GitHub and write their ID, name and the URL for their repos list to a queue.</li>
+<li>Use a second Azure Function to process messages from the queue, querying GitHub for the list of repos, creating a JSON document with the organisation ID, name and repos with star counts and then writing the results to an Azure DocumentDB database.</li>
+</ul>
+
+<p>The first function provides the input for the second function to process. In this tutorial, we will limit the amount of data retrieved from the GitHub API to keep things simple. If, however, you were working with a large data source then our approach is a good way of making sure that the functions don&rsquo;t spend too much time running. If we were to try and do this with one function, it would retrieve the list of organisations from GitHub, then loop through them querying for more data and building the results list, which could be time consuming. With the approach we will build here, the first function runs relatively quickly on a schedule, the second function is then triggered multiple times to process one queue entry.</p>
+
+<p>The processed data will be written to Azure DocumentDB. Combined with Azure Functions this gives us a <strong><em>serverless</em></strong> solution, where we have no servers, no operating systems and no databases to patch, run or otherwise maintain.</p>
+
+<h3 id="walkthrough">Walkthrough</h3>
+
+<p>In part 1, we will set up some pre-requisites, create the Azure Function App and write our first function. In part 2, we will write the second function.</p>
+
+<p>To create this tutorial I&rsquo;ve already been through the process of creating my first Azure Functions and I can honestly say that they truly are very simple and fast to build. But as with any new technology, my learning began with that daunting feeling you always get when you start looking at the first page of unfamiliar documentation. <em>Where do I start with this?</em> So, here&rsquo;s a walkthrough of how I got my Azure Functions working.</p>
+
+<h3 id="0-pre-requisites">0. Pre-Requisites</h3>
+
+<p>There are a couple of things to do prior to getting started with this tutorial.</p>
+
+<ul>
+<li>First, it&rsquo;s highly recommended that you install the <a href="http://storageexplorer.com/">Azure Storage Explorer</a> as it&rsquo;s helpful
+during development to see what&rsquo;s going on in the Azure Storage Queue that we&rsquo;ll be using.</li>
+<li>Second, create a DocumentDB account in your Azure Subscription. You don&rsquo;t need to create a database or a collection as we can do that via the Azure Function.</li>
+</ul>
+
+<p>To create a DocumentDB account, go to the Azure Portal at <a href="https://portal.azure.com">https://portal.azure.com</a> and once signed-in click the <strong>+ New</strong> link at the top left, choose <strong>Databases</strong> and then <strong>NoSQL (DocumentDB)</strong></p>
+
+<p><img src="/images/2017/01/functions-create-documentdb.png" alt="" /></p>
+
+<p>For <strong>account ID</strong> you just need to provide a unique name for your DocumentDB account. Leave the <strong>NoSQL API</strong> value at its default of <strong>DocumentDB</strong> and choose the appropriate Azure subscription from the list. Provide a unique name for the Resource Group that will contain your DocumentDB resources and then select an Azure region from the <strong>Location</strong> list. If you don&rsquo;t know which region to choose, just pick one that&rsquo;s near you.</p>
+
+<h3 id="1-create-a-function-app">1. Create a Function App</h3>
+
+<p>If you haven&rsquo;t used Azure Functions before, the starting point is here <a href="https://functions.azure.com/">https://functions.azure.com/</a>. From there you can either sign in to your existing Azure subscription or create a free account to try Functions out. Once you&rsquo;re done with the sign-up / sign-in, you&rsquo;ll get to here:</p>
+
+<p><img src="/images/2017/01/getting-started-azure-functions.png" alt="" /></p>
+
+<p>If you have more than one Azure subscription, you can select it here. You then need to choose a unique name for your Function App and select an Azure Region where your function will be deployed to. If you&rsquo;re unsure which region to choose, just pick one that&rsquo;s nearest to whatever part of the world you&rsquo;re in.</p>
+
+<h3 id="2-create-the-first-function">2. Create the First Function</h3>
+
+<p>A few moments after you click the <strong>Create + get started</strong> button you&rsquo;ll be taken to the Azure Portal where the Function app blade will be open at the quick start page</p>
+
+<p><img src="/images/2017/01/functions-quick-start.png" alt="" /></p>
+
+<p>Using these options, it&rsquo;s really simple to get started quickly with a pre-built Azure Function. The first function we are going to create will run on a schedule, so we&rsquo;ll choose the <strong>Timer</strong> scenario and <strong>C#</strong> as the language. Click the <strong>Create this function</strong> button. After a few moments you&rsquo;ll find yourself in the Azure Portal on the Function App blade. You&rsquo;ll get a few useful hints to help you find your way around, but once you&rsquo;re done with them you should find yourself in the <strong>Code</strong> view.</p>
+
+<p><img src="/images/2017/01/functions-code-view-start.png" alt="" /></p>
+
+<p>Near the top right, click the &ldquo;View Files&rdquo; and &ldquo;Logs&rdquo; buttons. This will open up some additional panels which will make things a little easier. In the files panel, which will appear on the right when you click <strong>View Files</strong>, there are two files where all the magic of Azure Functions happens!</p>
+
+<ul>
+<li><strong>run.csx</strong> is a C# script file which is where we will write our code.</li>
+<li><strong>function.json</strong> provides some configuration information for our function, including details of its inputs and outputs.</li>
+</ul>
+
+<p>At this point, you have a fully working Azure Function. It&rsquo;s a timer function and it&rsquo;s configured to fire every five minutes. If you click the <strong>Run</strong> button at the top of the code panel, the function will run. Nothing will happen, but if you click <strong>Logs</strong> near the top right, you&rsquo;ll get a log panel appear at the bottom and in there you should see something like:</p>
+
+<pre><code>2017-01-17T11:25:00.013 Function started (Id=de84439b-b897-4890-8803-4ecfd59a670d)
+2017-01-17T11:25:00.013 C# Timer trigger function executed at: 1/17/2017 11:25:00 AM
+2017-01-17T11:25:00.013 Function completed (Success, Id=de84439b-b897-4890-8803-4ecfd59a670d)
+</code></pre>
+
+<p>The second line in the log entry is the one that&rsquo;s written out by our function. So, let&rsquo;s get this function doing something more interesting than just writing to a log.</p>
+
+<h3 id="3-modify-the-function-configuration">3. Modify the Function Configuration</h3>
+
+<p>There are two things we want to modify. First, we don&rsquo;t want this to run every 5 minutes. Instead, we want this to run hourly. Second, we need to output the results of the function to an Azure Storage queue.</p>
+
+<p>Making sure you have the files panel open, click on the <code>function.json</code> file and you should see this:</p>
+
+<pre><code>{
+  &quot;disabled&quot;: false,
+  &quot;bindings&quot;: [
+    {
+      &quot;name&quot;: &quot;myTimer&quot;,
+      &quot;type&quot;: &quot;timerTrigger&quot;,
+      &quot;direction&quot;: &quot;in&quot;,
+      &quot;schedule&quot;: &quot;0 */5 * * * *&quot;
+    }
+  ]
+}
+</code></pre>
+
+<p>The <code>disabled</code> property is set to <code>false</code> by default, which means our function is running, or ready to run. In some circumstances you may want to stop the function from firing, which is easily achieved by changing <code>disabled</code> to <code>true</code>.</p>
+
+<p>The <code>bindings</code> section configures the input and outputs for the function. In this case, we have a <code>timerTrigger</code> as an input, indicated by the <code>direction</code> property being set to <code>in</code>. The <code>schedule</code> indicates how often the function will run and uses cron format. In this case, it&rsquo;s set to run every 5 minutes.</p>
+
+<p>We can edit the <code>function.json</code> but Azure Functions provides another way to do this. On the left side of the portal we have four options:</p>
+
+<p><img src="/images/2017/01/functions-dev-int-man.png" alt="" /></p>
+
+<p><strong>Develop</strong> is the view we&rsquo;re looking at now. If you click on <strong>Integrate</strong> you&rsquo;ll see a page with three options at the top - <strong>Triggers</strong>, <strong>Inputs</strong> and <strong>Outputs</strong>. There should be a box underneath <strong>Triggers</strong> marked <strong>Timer (myTimer)</strong>. Click that box and you&rsquo;ll see the following:</p>
+
+<p><img src="/images/2017/01/functions-trigger-1.png" alt="" /></p>
+
+<p>At the lower right, you can see <strong>Schedule</strong>. Here we can enter a new schedule in cron format. The following will set the schedule to run hourly.</p>
+
+<pre><code>0 0 * * * *
+</code></pre>
+
+<p>Update the schedule with the above and click the Save button.</p>
+
+<p>Next, we want to add an Azure Storage Queue output, so that we can send the results of our Function to a queue. Azure Functions makes this simple. Whilst still on the <strong>Integrate</strong> page click on <strong>+ New Output</strong> and you&rsquo;ll get some choices:</p>
+
+<p><img src="/images/2017/01/functions-outputs.png" alt="" /></p>
+
+<p>We want to add a message queue, so click on <strong>Azure Queue Storage</strong> and then click the <strong>Select</strong> button. We now have to provide some information.</p>
+
+<p><img src="/images/2017/01/functions-queue-output.png" alt="" /></p>
+
+<p>The <strong>Message parameter name</strong> will be a parameter in our code which will contain the data we want to place into the queue. The <strong>Queue Name</strong> is the name of the queue we will be placing our data into. The <strong>Storage account connection</strong> is the name of an environment variable in the Azure Function App which contains the connection string for our storage account. The default values will be fine for our purposes, so click the <strong>Save</strong> button.</p>
+
+<p>If you click back to the <strong>Develop</strong> view and open <code>function.json</code> in the Code panel, you&rsquo;ll see that the configuration has been updated:</p>
+
+<pre><code>{
+  &quot;bindings&quot;: [
+    {
+      &quot;name&quot;: &quot;myTimer&quot;,
+      &quot;type&quot;: &quot;timerTrigger&quot;,
+      &quot;direction&quot;: &quot;in&quot;,
+      &quot;schedule&quot;: &quot;0 0 * * * *&quot;
+    },
+    {
+      &quot;type&quot;: &quot;queue&quot;,
+      &quot;name&quot;: &quot;outputQueueItem&quot;,
+      &quot;queueName&quot;: &quot;outqueue&quot;,
+      &quot;connection&quot;: &quot;AzureWebJobsStorage&quot;,
+      &quot;direction&quot;: &quot;out&quot;
+    }
+  ],
+  &quot;disabled&quot;: false
+}
+</code></pre>
+
+<p>Our <code>in</code> bindings are still there, but we now also have an <code>out</code> binding for the queue. You&rsquo;ll notice that the timer schedule has been modified as well.</p>
+
+<h3 id="4-create-a-queue-in-azure-storage">4. Create a Queue in Azure Storage</h3>
+
+<p>When you created the Azure Function App, it automatically created a storage account and pre-configured the connection string. This all helps to simplify the setup. However, we still need to do one or two things ourselves. We need to create a queue in our storage account. This is where the Azure Storage Explorer comes in handy. Start it up and login to your Azure account and you should see that you have a Storage Account named with an &ldquo;azurefunctions&rdquo; prefix.</p>
+
+<p><img src="/images/2017/01/functions-storage-explorer.png" alt="" /></p>
+
+<p>Right click <strong>Queues</strong>, choose <strong>Create Queue</strong> from the menu and then name the queue <code>outqueue</code> to match the value we provided when we added the queue output earlier.</p>
+
+<p><img src="/images/2017/01/functions-storage-explorer-outqueue.png" alt="" /></p>
+
+<h3 id="5-write-the-code">5. Write the Code</h3>
+
+<p>We&rsquo;re ready to write some code! Return to the Azure Portal and make sure you&rsquo;re back in the <strong>Develop</strong> view with the <strong>Code</strong> panel visible. If it&rsquo;s not open already, open the <strong>View Files</strong> panel and make sure <code>run.csx</code> is selected. It should currently look like this:</p>
+
+<pre><code>using System;
+
+public static void Run(TimerInfo myTimer, TraceWriter log)
+{
+    log.Info($&quot;C# Timer trigger function executed at: {DateTime.Now}&quot;);    
+}
+</code></pre>
+
+<p>We need to add in the output parameter which we do by adding <code>outputQueueItem</code> as follows</p>
+
+<pre><code>public static void Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQueueItem, TraceWriter log)
+</code></pre>
+
+<p>We add the parameter as an <code>ICollector</code> of type <code>string</code> because the output binding supports multiple items. Each run of our function will generate multiple message queue items and we will build a collection of those items in our code.</p>
+
+<p>We&rsquo;re going to make a call to the GitHub API and then process the JSON data returned. Azure Functions includes a selection of frequently used namespaces and assemblies, including those used for making HTTP calls and processing JSON data, so we need to modify the start of our code as follows:</p>
+
+<pre><code>#r &quot;Newtonsoft.Json&quot;
+
+using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+</code></pre>
+
+<p>We can now remove the <code>log.Info ...</code> line at the start of our code and replace it with the code to make the HTTP calls to the GitHub API.</p>
+
+<pre><code>{
+    HttpClient client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(&quot;Mozilla&quot;, &quot;5.0&quot;));
+    JArray response = JArray.Parse(await client.GetStringAsync(&quot;https://api.github.com/organizations?per_page=5&quot;));
+</code></pre>
+
+<p>The <code>client.DefaultRequestHeaders ...</code> line is necessary as the call to the GitHub API will fail if we don&rsquo;t set a user agent in the HTTP header that we send.</p>
+
+<p>The third line makes the call to the GitHub API. You&rsquo;ll notice that it uses <code>await</code> so we&rsquo;ll need to modify our method to make it <code>async</code> and return a <code>Task</code>.</p>
+
+<pre><code>public static async Task Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQueueItem, TraceWriter log)
+</code></pre>
+
+<p>Finally, we need to process the data returned from the API and add the data that we want written to the queue. I&rsquo;m creating a new JSON document which contains a subset of the information returned by the GitHub API - the organisation name, ID and URL to query for their list of repos.</p>
+
+<pre><code>foreach (JObject org in response)
+{
+    object document = new {
+        id = org[&quot;id&quot;].ToString(),
+        orgname = org[&quot;login&quot;].ToString(),
+        repos = org[&quot;repos_url&quot;].ToString()
+        };
+    string json = JsonConvert.SerializeObject(document);
+    outputQueueItem.Add(json);
+}
+</code></pre>
+
+<p>The really nice thing about functions is that simply adding to my <code>outputQueueItem</code> collection will result in the data being written to the queue. I don&rsquo;t need to write any code, or include any external assemblies to specifically perform the write of the data to Azure Queue Storage. When the function completes, the content of <code>outputQueueItem</code> will be sent to the queue we specified in the <code>function.json</code> file.</p>
+
+<p>Here&rsquo;s our complete code:</p>
+
+<pre><code>#r &quot;Newtonsoft.Json&quot;
+
+using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+public static async Task Run(TimerInfo myTimer, ICollector&lt;string&gt; outputQueueItem, TraceWriter log)
+{
+    HttpClient client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(&quot;Mozilla&quot;, &quot;5.0&quot;));
+    JArray response = JArray.Parse(await client.GetStringAsync(&quot;https://api.github.com/organizations?per_page=5&quot;));
+    foreach (JObject org in response)
+    {
+        object document = new {
+            id = org[&quot;id&quot;].ToString(),
+            orgname = org[&quot;login&quot;].ToString(),
+            repos = org[&quot;repos_url&quot;].ToString()
+            };
+        string json = JsonConvert.SerializeObject(document);
+        outputQueueItem.Add(json);
+    }
+}
+</code></pre>
+
+<p>If we now click the <strong>Save</strong> button at the top of the <strong>Code</strong> panel, we will see a message in the logs indicating that the script has changed and, hopefully, that compilation has been successful:</p>
+
+<pre><code>2017-01-17T16:16:13.623 Script for function 'TimerTriggerCSharp1' changed. Reloading.
+2017-01-17T16:16:13.685 Compilation succeeded.
+</code></pre>
+
+<p>Finally, we can click the <strong>Run</strong> button to see what our function does.</p>
+
+<pre><code>2017-01-17T16:17:37.480 Function started (Id=dacedfbc-faaf-467f-94d0-153f1bf61da8)
+2017-01-17T16:17:38.691 Function completed (Success, Id=dacedfbc-faaf-467f-94d0-153f1bf61da8)
+</code></pre>
+
+<p>Not much, apparently. But wait, let&rsquo;s take a look in the Azure Storage Explorer:</p>
+
+<p><img src="/images/2017/01/functions-storage-explorer-queue-content-3.png" alt="" /></p>
+
+<p>A-ha, there&rsquo;s our data!</p>
+
+<p>That&rsquo;s the first part of our solution completed. Next we need to process the items in the queue, query the data we need from the GitHub API and write it out to DocumentDB. All of which is really simple with Azure Functions! Find out how in <a href="https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-2/">Part 2</a>.</p>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://example.com/post/going-serverless-with-azure-functions-and-documentdb-part-2/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Going Serverless with Azure Functions and DocumentDB - Part 2</span>
+              </a>
+            </span>
+          
+          
+            <span class="button next">
+              <a href="https://example.com/post/getting-started-with-bash-on-ubuntu-on-windows/">
+                <span class="button__text">Getting Started with Bash on Ubuntu on Windows</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2019 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+    
+  </div>
+</footer>
+
+<script src="https://example.com/assets/main.js"></script>
+<script src="https://example.com/assets/prism.js"></script>
+
+  
+</div>
+
+</body>
+</html>

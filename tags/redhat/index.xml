@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Redhat on Mark Whitby - Azure | Open Source | Code</title>
-    <link>https://markw.me/tags/redhat/</link>
-    <description>Recent content in Redhat on Mark Whitby - Azure | Open Source | Code</description>
+    <title>Redhat on Mark Whitby</title>
+    <link>https://example.com/tags/redhat/</link>
+    <description>Recent content in Redhat on Mark Whitby</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language>
     <lastBuildDate>Mon, 20 Jun 2016 12:11:00 +0100</lastBuildDate>
     
-	<atom:link href="https://markw.me/tags/redhat/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://example.com/tags/redhat/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Installing Azure CLI on RedHat Enterprise Linux 7.2</title>
-      <link>https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/</link>
+      <link>https://example.com/installing-azure-cli-on-redhat-enterprise-linux-7-2/</link>
       <pubDate>Mon, 20 Jun 2016 12:11:00 +0100</pubDate>
       
-      <guid>https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/</guid>
+      <guid>https://example.com/installing-azure-cli-on-redhat-enterprise-linux-7-2/</guid>
       <description>One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&amp;rsquo;s no longer the case.
 The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms.</description>
     </item>

@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Mark Whitby - Azure | Open Source | Code</title>
-    <link>https://markw.me/post/</link>
-    <description>Recent content in Posts on Mark Whitby - Azure | Open Source | Code</description>
+    <title>Posts on Mark Whitby</title>
+    <link>https://example.com/post/</link>
+    <description>Recent content in Posts on Mark Whitby</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language>
     <lastBuildDate>Wed, 18 Jan 2017 09:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://markw.me/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Going Serverless with Azure Functions and DocumentDB - Part 2</title>
-      <link>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-2/</link>
+      <link>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-2/</link>
       <pubDate>Wed, 18 Jan 2017 09:00:00 +0000</pubDate>
       
-      <guid>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-2/</guid>
+      <guid>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-2/</guid>
       <description>In Part 1 we created an Azure Function that queried the GitHub API to retrieve a list of organisations and write the organisation name, id and URL for their GitHub repos to a queue in Azure Storage. In Part 2, we will write an Azure Function that listens for incoming messages on that queue, queries the GitHub API for details of the repos and then writes the data out to DocumentDB.</description>
     </item>
     
     <item>
       <title>Going Serverless with Azure Functions and DocumentDB - Part 1</title>
-      <link>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-1/</link>
+      <link>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-1/</link>
       <pubDate>Tue, 17 Jan 2017 09:00:00 +0000</pubDate>
       
-      <guid>https://markw.me/going-serverless-with-azure-functions-and-documentdb-part-1/</guid>
+      <guid>https://example.com/going-serverless-with-azure-functions-and-documentdb-part-1/</guid>
       <description>Today, I had a need to get my head around Azure Functions, so I decided to build a Function App which would take data from a public API and store it in Azure. The idea I came up with was to extract a list of organisations from GitHub and then build a list of some of their repos and star counts and store it in a database.
 I came up with the following solution.</description>
     </item>
     
     <item>
       <title>Getting Started with Bash on Ubuntu on Windows</title>
-      <link>https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/</link>
+      <link>https://example.com/getting-started-with-bash-on-ubuntu-on-windows/</link>
       <pubDate>Mon, 01 Aug 2016 15:47:00 +0100</pubDate>
       
-      <guid>https://markw.me/getting-started-with-bash-on-ubuntu-on-windows/</guid>
+      <guid>https://example.com/getting-started-with-bash-on-ubuntu-on-windows/</guid>
       <description>Bash on Ubuntu on Windows. Now there&amp;rsquo;s a snappy product name! But this somewhat awkward name belongs to one of the best things to happen to Microsoft Windows in a very long time. A Bash shell for Windows.
 People like me who like to work with a variety of different technologies often find themselves dual booting Windows and a Linux distribution or using local or cloud based virtual machines running Linux.</description>
     </item>
     
     <item>
       <title>Installing Azure CLI on RedHat Enterprise Linux 7.2</title>
-      <link>https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/</link>
+      <link>https://example.com/installing-azure-cli-on-redhat-enterprise-linux-7-2/</link>
       <pubDate>Mon, 20 Jun 2016 12:11:00 +0100</pubDate>
       
-      <guid>https://markw.me/installing-azure-cli-on-redhat-enterprise-linux-7-2/</guid>
+      <guid>https://example.com/installing-azure-cli-on-redhat-enterprise-linux-7-2/</guid>
       <description>One of the cool things about working with Microsoft Azure, in fact, working with a lot of Microsoft stuff right now, is the cross platform support. A GUI tool, VbScript or PowerShell running on a Windows computer were once essential for administration, but that&amp;rsquo;s no longer the case.
 The Azure Cross Platform Command Line Interface provides a tool built using Node.js which can run on Windows, macOS or Linux to provide developers and IT administrators the ability to develop, deploy and manage Microsoft Azure applications on any of those platforms.</description>
     </item>

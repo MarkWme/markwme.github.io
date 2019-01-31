@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>About on Mark Whitby - Azure | Open Source | Code</title>
-    <link>https://markw.me/about/</link>
-    <description>Recent content in About on Mark Whitby - Azure | Open Source | Code</description>
+    <title>About on Terminal</title>
+    <link>https://example.com/about/</link>
+    <description>Recent content in About on Terminal</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language>
+    <language>en-us</language>
     <lastBuildDate>Sat, 20 Jun 2015 14:02:37 +0200</lastBuildDate>
     
-	<atom:link href="https://markw.me/about/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://example.com/about/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
